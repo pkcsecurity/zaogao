@@ -1,0 +1,1 @@
+{:infer-externs false, :output-dir "resources/public/js/development", :externs ["closure-js/externs"], :cache-analysis true, :optimizations :none, :output-to "resources/public/js/development/index.js", :asset-path "js/development", :output-wrapper false, :source-map true, :libs ["closure-js/libs"], :main zaogao.cljs.core, :pretty-print true}
