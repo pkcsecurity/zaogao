@@ -1,1 +1,0 @@
-{:output-wrapper true, :externs ["externs/externs.js" "closure-js/externs"], :libs ["closure-js/libs"], :output-to "resources/public/js/release/index.js", :source-map "resources/public/js/release/index.js.map", :main daomei.cljs.core, :output-dir "resources/public/js/release", :optimizations :advanced, :pseudo-names false}
