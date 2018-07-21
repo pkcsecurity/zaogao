@@ -13,6 +13,7 @@
                  [reagent "LATEST"]
                  [org.clojure/core.async "0.4.474"]
                  [cljs-http "LATEST"]
+                 [clj-http "LATEST"]
                  [ring-middleware-format "0.7.2"]
                  [lein-cljsbuild "LATEST"]
                  [cljsjs/chartjs "LATEST"]]

@@ -14,15 +14,31 @@
     [:* {:box-sizing :border-box}]
     [:body {:font-size "16px"
             :line-height 1.5}]
-    [:h1 {:font-size "3.157em"}]
-    [:h2 {:font-size "2.369em"}]
-    [:h3 {:font-size "1.777em"}]
-    [:h4 {:font-size "1.333em"}]
-    [:h5 {:font-size "1em"}]
-    [:h6 {:font-size "0.75em"}]
-    [:.border-wide {:border-width "2px"}]
+    [:html :body
+     {:font-family ["'Roboto'"]
+      :color "#222"
+      :font-weight 700}]
+    [:h1 :h2 :h3 :h4 :h5 :h6
+     {:line-height 1.25
+      :letter-spacing "0.3px"}]
+    [:h1 {:font-size "3.157em"
+          :font-weight 700}]
+    [:h2 {:font-size "2.369em"
+          :font-weight 700}]
+    [:h3 {:font-size "1.777em"
+          :font-weight 700}]
+    [:h4 {:font-size "1.333em"
+          :font-weight 700}]
+    [:h5 {:font-size "1em"
+          :font-weight 700}]
+    [:h6 {:font-size "0.75em"
+          :font-weight 700}]
+    [:.transition {:transition [[:all "0.2s" "ease-in-out"]]}]
+    [:.border-wide {:border-width "3px"}]
+    [:.border-super-wide {:border-width "5px"}]
     [:.black {:color "#000"}]
     [:.white {:color "#fff"}]
+    [:.border-white {:color "#fff"}]
     [:.bg-white {:background-color "#fff"}]))
 
 (def primary-css
@@ -59,6 +75,7 @@
               (style "https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css")
               (style "https://cdnjs.cloudflare.com/ajax/libs/basscss/8.0.4/css/basscss.min.css")
               (style "https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css")
+              (style "https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css")
               [:style core-css]
               [:style (if chinese? secondary-css primary-css)]
               [:title (if chinese? "12 Characteristics")]]
@@ -67,4 +84,7 @@
               [:script {:src 
                         (if (= "production" (System/getenv "RING_ENV"))
                           "/js/release/index.js"
-                          "/js/development/index.js")}]]))
+                          "/js/development/index.js")}]
+              [:script {:async :async
+                        :defer :defer
+                        :src "https://maps.googleapis.com/maps/api/js?key=AIzaSyCxFYjEyBPCEJt0UzSEjtduMWEZ1cmYikI"}]]))

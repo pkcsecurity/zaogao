@@ -1,66 +1,80 @@
 (ns zaogao.cljs.core
   (:require [reagent.core :as r]
-            [zaogao.cljs.controller :as controller]
+            [zaogao.cljs.controller :as c]
             [zaogao.cljs.radar :as radar]
             [goog.dom :as dom]))
 
 (def app-state (r/atom :landing))
+
+(add-watch app-state
+           ::app-state
+           (fn [_ _ _ _]
+             (.scroll js/window 0 0)))
 
 (enable-console-print!)
 
 (defn landing-header [chinese?]
   (if chinese?
     [:div.flex.justify-center.items-center.flex-column.bg-pri.white
-     {:style {:height "150px"}}
+     {:style {:height "200px"}}
      [:h1.mb2 "十二"]
      [:h3.caps "健康教会十二个主要特点"]]
-    [:div.flex.justify-center.items-center.flex-column.bg-pri.white
-     {:style {:height "150px"}}
-     [:h1.mb2 "12"]
-     [:h3.caps "Characteristics"]]))
-
-(defn landing-hero [chinese?]
-  [:div.absolute.left-0.right-0.flex.justify-center.items-center
-   {:style {:top "150px"
-            :bottom "150px"}}
-   [:div.max-width-1.mx-auto.col-12.p3
-    (if chinese?
-     [:h1.sec "您的教會狀況如何?"]
-     [:h1.sec "How is your church doing?"])]])
+    [:div.bg-pri.white.pl3.flex.justify-center.flex-column.pt3
+     {:style {:height "200px"}}
+     [:div
+      [:img.mb2.left 
+       {:height "130px"
+        :src "12.png"}]]]))
 
 (defn landing-button [chinese?]
-  [:div.absolute.left-0.right-0.bottom-0.flex.justify-center.items-center
-   {:style {:height "150px"}}
-   [:div.bg-pri.m2.px2.py2.rounded
-    {:on-click (fn []
-                 (reset! app-state :survey-intro))}
+  [:div.border.border-pri.m2.px4.py2.rounded.border-super-wide.pri.col-10.center.mx-auto
+   {:style {:background-color "hsla(136,86%,95%,0.95)"}
+    :on-click (fn []
+                (reset! app-state :survey-question))}
+   (if chinese?
+     [:h3 "十二个特点是什么？"]
+     [:h3 "Find out!"])])
+
+(defn landing-hero [chinese?]
+  [:div.absolute.left-0.right-0.bottom-0
+   {:style {:top "275px"
+            :background-image "url('/bg.png')"}}
+   [:div.max-width-1.mx-auto.col-12.p3.mt3
     (if chinese?
-      [:h3.white "十二个特点是什么？"]
-      [:h3.white "What are the 12?"])]])
+      [:h1.sec "您的教會狀況如何?"]
+      [:h1.sec.pr4 "How is your church doing?"])]
+   [landing-button chinese?]])
+
 
 (defn menu [menu-atom]
   [:div.fixed.top-0.left-0.bottom-0.right-0.z4.p2.white
    {:style {:background-color "rgba(0,0,0,0.95)"}}
    [:h3.white {:on-click #(reset! menu-atom false)}
     [:i.fa.fa-times]]
-   [:div.my3
-    [:h2 
-     {:on-click #(reset! app-state :characteristics)}
+   [:div.my4
+    [:h2.my4.px1
+     {:on-click (fn []
+                  (reset! app-state :characteristics)
+                  (reset! menu-atom false))}
      "12 Characteristics"]
-    [:h2 
-     {:on-click (constantly nil)}
+    [:h2.my4.px1
+     {:on-click (fn []
+                  (reset! app-state :characteristics)
+                  (reset! menu-atom false))}
      "Resources"]
-    [:h2 
-     {:on-click #(reset! app-state :survey-intro)}
-     "Survey" ]
-    [:h2 
-     {:on-click #(reset! app-state :profile)}
+    [:h2.my4.px1
+     {:on-click (fn []
+                  (reset! app-state :survey-question)
+                  (reset! menu-atom false))}
+     "Survey"]
+    [:h2.my4.px1
+     {:on-click #(.replace js/location "http://0.0.0.0:8000")}
      [:i.mr2.fa.fa-cog] "Admin"]]])
 
 (defn nav []
   (let [menu? (r/atom false)]
     (fn []
-      [:div
+      [:div.border-bottom.border-white
        (when @menu?
          [menu menu?])
        [:div.flex.justify-between.items-center.p2.bg-pri.white
@@ -68,18 +82,31 @@
         [:h3 
          {:on-click #(reset! menu? true)}
          [:i.fa.fa-bars]]
-        [:h3 "十二"]
+        [:img {:src "12_nav.png"
+               :height "40px"
+               :on-click #(reset! app-state :landing)}]
         [:h3 
          {:on-click #(reset! app-state :profile)}
          [:i.fa.fa-user-circle]]]])))
 
 (defn survey-intro-item [i text]
-  [:div.col-12.flex.items-center.px2.pt1
-   [:div.flex.justify-center.items-center.border-pri.pri.border.circle.border-wide
-    {:style {:height "35px"
-             :width "35px"}}
-    i]
-   [:h4.pri.ml2 "Biblical " text]])
+  (let [fadeIn (* i 50)
+        show? (r/atom false)]
+    (r/create-class
+      {:component-did-mount
+       (fn [_] 
+         (js/setTimeout #(reset! show? true) fadeIn))
+
+       :reagent-render
+      (fn [i text]
+        [:div.col-12.flex.items-center.px2.pt1
+         {:class (when @show? "animated fadeInLeft")
+          :style {:opacity (when-not @show? 0)}}
+         [:div.flex.justify-center.items-center.border-pri.pri.border.circle.border-wide
+          {:style {:height "30px"
+                   :width "30px"}}
+          i]
+         [:h5.pri.ml2 text]])})))
 
 (def characteristics
   (take 12
@@ -90,7 +117,7 @@
                 "Mission"])))
 
 (defn survey-start-button []
-  [:div.flex.justify-center.items-center.mt2
+  [:div.flex.justify-center.items-center
    {:on-click #(reset! app-state :survey-question)
     :style {:height "150px"}}
    [:div.bg-pri.m2.p2.rounded
@@ -99,7 +126,7 @@
     [:h3.white "Start Survey"]]])
 
 (defn survey-intro-body []
-  [:div
+  [:div.animated.fadeIn
    [:h4.sec.p2 "The following are 12 Biblical Characteristics we'll be asking about:"]
    (for [[idx c] (map-indexed vector characteristics)]
      ^{:key idx} [survey-intro-item (inc idx) c])
@@ -111,13 +138,13 @@
    [radar/radar [(radar/random-radar-item 0)]]
    [:div.max-width-1.p2.flex.justify-center.items-center.flex-column
     [:div.center.mt2
-     [:h5 "Share your results?"]]
+     [:h6 "Share your results?"]]
     [:div.flex.justify-center.items-center
-     [:div.p2
+     [:div.p1
       [:h4.sec [:i.fa.fa-twitter]]]
-     [:div.p2
+     [:div.p1
       [:h4.sec [:i.fa.fa-facebook]]]
-     [:div.p2
+     [:div.p1
       [:h4.sec [:i.fa.fa-weixin]]]]]
 
    [:div.mt3.px2
@@ -135,8 +162,7 @@
      [:h5 "3. Biblical Discipleship"]]]
 
    [:div.mt3.px2
-    [:h4.sec "Create a profile to get a customized training plan 
-             to help your church become more healthy in these areas."]]
+    [:h4.sec "Create a profile to get your customized resources."]]
    [:div.max-width-1.mx-auto.col-12.bg-sec.rounded.white.center.py2.mt3
     {:on-click #(reset! app-state :create-account)
      :style {:width "250px"}}
@@ -151,41 +177,41 @@
        [:div {:on-click #(reset! selected 1)
               :style {:height "50px"
                       :width "15px"}}
-        [:div.border.border-pri.border-wide.circle
+        [:div.border.border-pri.border-wide.circle.transition
          {:class (if (= @selected 1) "bg-sec" "bg-white")
           :style {:margin-top "10px"
                   :height "30px"
                   :width "30px"}}]
-        [:div {:style {:margin-left "11px"}} 1]]
+        [:div.pri {:style {:margin-left "11px"}} 1]]
        [:div {:on-click #(reset! selected 2)
               :style {:height "50px"
                       :width "15px"}}
-        [:div.border.border-pri.border-wide.circle
+        [:div.border.border-pri.border-wide.circle.transition
          {:class (if (= @selected 2) "bg-sec" "bg-white")
           :style {:margin-top "10px"
                   :height "30px"
                   :width "30px"}}]
-        [:div {:style {:margin-left "11px"}} 2]]
+        [:div.pri {:style {:margin-left "11px"}} 2]]
        [:div {:on-click #(reset! selected 3)
               :style {:height "50px"
                       :width "15px"}}
-        [:div.border.border-pri.border-wide.circle
+        [:div.border.border-pri.border-wide.circle.transition
          {:class (if (= @selected 3) "bg-sec" "bg-white")
           :style {:margin-top "10px"
                   :height "30px"
                   :width "30px"}}]
-        [:div {:style {:margin-left "11px"}} 3]]
+        [:div.pri {:style {:margin-left "11px"}} 3]]
        [:div {:on-click #(reset! selected 4)
               :style {
                       :height "50px"
                       :width "15px"}}
-        [:div.border.border-pri.border-wide.circle
+        [:div.border.border-pri.border-wide.circle.transition
          {:class (if (= @selected 4) "bg-sec" "bg-white")
           :style {:margin-left "-5px"
                   :margin-top "10px"
                   :height "30px"
                   :width "30px"}}]
-        [:div {:style {:margin-left "4px"}} 4]]
+        [:div.pri {:style {:margin-left "4px"}} 4]]
        [:div.bg-pri.col-12.absolute 
         {:style {:top "50%"
                  :left 0
@@ -200,16 +226,16 @@
    [:h4 "Complete Survey"]])
 
 (defn survey-question []
-  [:div
+  [:div.pt3.px3
    [:div.p2
-    [:h1.mb3 "Biblical Worship"]
-    [:div.mb3
+    [:h3.mb3.sec.center "I. Biblical Worship"]
+    [:div.mb2
      [slider]]
-    [:h4.mb3 "How would you rate the corporate whorship of your church defined by John 4:24, in “spirit and in truth”"]]
+    [:h5.mb3 "How would you rate the corporate worship of your church defined by John 4:24, in “spirit and in truth”"]]
    [:div.pt3.px2
-    [:div.mb3
+    [:div.mb2
      [slider]]
-    [:h4.mb3 "How would you rate the individual worship of the members of your church as defined
+    [:h5.mb3 "How would you rate the individual worship of the members of your church as defined
              by being a ”living sacrifice” who is no longer conformed to the pattern of this 
              world? (Rom. 12:1-2)"]]
    [:div.center.mt2
@@ -217,27 +243,76 @@
    [complete-button]])
 
 (defn create-account []
-  [:div.fixed.bottom-0.left-0.right-0.bg-pri.px2.pt3
-   {:style {:top "75px"}}
-   [:h2.sec "Create Account"]
-   [:div.my2
-    [:input.col-12.p1 {:placeholder "Name"}]]
-   [:div.my2
-    [:input.col-12.p1 {:placeholder "Address"}]]
-   [:div.my2
-    [:input.col-12.p1 {:placeholder "Phone Number"}]]
-   [:div.my2
-    [:input.col-12.p1 {:placeholder "Position in Church"}]]
-   [:h4.sec.center.mt4 "Get your custom plan!"]
-   [:div.mt3
-    [:div.bg-sec.white.rounded.center.p2
-     {:on-click #(reset! app-state :schedule)}
-     [:h3 "Create Account"]]]])
+  (let [address (r/atom "")]
+    (fn []
+      [:div.fixed.bottom-0.left-0.right-0.bg-pri.px3.pt4
+       {:style {:top "75px"}}
+       [:h2.sec "Create Profile"]
+       [:div.my2
+        [:input.col-12.p1 {:placeholder "Name"}]]
+       [:div.my2
+        [:input.col-12.p1 {:value @address
+                           :on-change #(reset! address (.. % -target -value))
+                           :placeholder "Address"}]]
+       [:div.my2
+        [:input.col-12.p1 {:placeholder "Phone Number"}]]
+       [:div.my2
+        [:input.col-12.p1 {:placeholder "Position in Church"}]]
+       [:div.mt3
+        [:div.bg-sec.white.rounded.center.p2
+         {:on-click (fn []
+                      (if (not= @address "")
+                        (c/add-pin @address))
+                      (reset! app-state :custom-plan))}
+         [:h4 "Get Resources"]]]])))
+
+(defn custom-plan []
+  [:div.p2.mt3
+   [:div.p2
+    [:div.mb1
+     [:i.fa.fa-3x.fa-chevron-circle-down.pri]]
+    [:h2.mb3.sec "Here are your custom resources:"]
+    [:div.clearfix.mb2
+     {:on-click #(reset! app-state :characteristic-page)}
+     [:div.col.col-2
+      [:div.border.circle.border-pri.pri.border-wide.h3.center
+       {:style {:height "30px"
+                :width "30px"
+                :line-height "24px"}}
+       1]]
+     [:div.col.col-10.h3.pri
+      "Evangelism"]]
+    [:div.clearfix.mb2
+     [:div.col.col-2
+      [:div.border.circle.border-pri.pri.border-wide.h3.center
+       {:style {:height "30px"
+                :width "30px"
+                :line-height "24px"}}
+       2]]
+     [:div.col.col-10.h3.pri
+      "Discipleship"]]
+    [:div.clearfix.mb2
+     [:div.col.col-2
+      [:div.border.circle.border-pri.pri.border-wide.h3.center
+       {:style {:height "30px"
+                :width "30px"
+                :line-height "24px"}}
+       3]]
+     [:div.col.col-10.h3.pri
+      "Mission"]]]
+   [:div.p2
+    [:div.mb1
+     [:i.fa.fa-3x.fa-fast-forward.pri]]
+    [:h2.mb3.sec "Now join a small group!"]
+    [:p.sec "WHAT IS A SMALL GROUP? A group of 8-12 peers who will periodically meet to discuss the 12 characteristics you are learning about. Schedule a time to meet with a small group leader below if you are interested."]]
+   [:div.p2.bg-sec.white.rounded.center.m1.mt2
+    {:on-click #(reset! app-state :schedule)}
+    [:h4 "Schedule Meeting"]]])
 
 (defn schedule []
   (let [selected (r/atom nil)]
     (fn []
-      [:div.fixed.bottom-0.left-0.right-0.bg-pri.px2.pt3
+      [:div.fixed.bottom-0.left-0.right-0.bg-pri.p3
        {:style {:top "75px"}}
        [:h2.white "Schedule a time to met with a small group leader"]
        [:p.white.mt2 "Choose one of the following times that works best for you"]
@@ -273,7 +348,10 @@
          [:h5 "14:00"]]]
        [:div.mt3
         [:div.bg-sec.white.rounded.center.p2
-         {:on-click #(reset! app-state :thanks)}
+         {:on-click (fn []
+                      (reset! app-state :thanks)
+                      (js/setTimeout #(reset! app-state :landing)
+                                     2000))}
          [:h3 "Schedule Inteview"]]]])))
 
 (defn twelve-chars []
@@ -296,12 +374,12 @@
                  "十"
                  "十一"
                  "十二"] i)]])
-   [:div.rounded.bg-sec.white.col-12.m1.py1
+   [:div.rounded.bg-sec.white.col-12.m1.p1.py2
     {:on-click #(reset! app-state :study-plan)}
-    [:h3.center "Small Group Plan"]]])
+    [:h4.center "Small Group Plan"]]])
 
 (defn study-plan []
-  [:div.bg-pri.py3.px2
+  [:div.bg-pri.p3
    [:h2.sec "Week 1"]
    [:h3.white.py1 "Biblical Discipleship"]
    [:p.white.my2 "The central command of the Great Commission is to make disciples. A 
@@ -317,7 +395,7 @@
       [:h1 [:i.fa.fa-circle-o]]]
      [:div.col-10.col
       [:h3 "Watch"]]]
-    [:iframe.mx-auto {:width 325
+    [:iframe.mx-auto {:width 305
                       :height 215
                       :src "https://www.youtube.com/embed/8lO0KcvWEH8?start=320" 
                       :frameborder "0" 
@@ -355,6 +433,7 @@
 
 (defn characteristic-page []
   [:div.py3
+   {:on-click #(reset! app-state :custom-plan)}
    [:h1.sec.center "一"]
    [:div.px3
     [:h2.sec.mb3
@@ -403,10 +482,10 @@
 (defn body [chinese?]
   (case @app-state
     :landing 
-    [:div.fixed.top-0.left-0.right-0.bottom-0
+    [:div.fixed.top-0.left-0.right-0.bottom-0.animated.fadeIn
+     [nav]
      [landing-header chinese?]
-     [landing-hero chinese?]
-     [landing-button chinese?]]
+     [landing-hero chinese?]]
 
     :survey-intro
     [:div
@@ -428,6 +507,11 @@
      [nav]
      [create-account]]
 
+    :custom-plan
+    [:div
+     [nav]
+     [custom-plan]]
+
     :schedule
     [:div
      [nav]
@@ -436,13 +520,14 @@
     :thanks
     [:div
      [nav]
-     [:div.mt4.center
-      [:h1.sec.my2 "Thanks!"]
-      [:h3.my2 "A small group leader will contact you!"]
-      [:h1.pri.my2 [:i.fa.fa-phone]]]]
+     [:div.mt4.center.p3
+      [:h1.sec.my4 "Thanks!"]
+      [:h2.my4.sec "A small group leader will contact you!"]
+      [:h1.pri.my4.animated.tada [:i.fa.fa-mobile.fa-3x]]]]
 
     :characteristics
     [:div
+     [nav]
      [landing-header]
      [twelve-chars]]
 
@@ -463,9 +548,9 @@
 
 
 (defn -main []
-  (controller/chinese?
+  (c/chinese?
     (fn [chinese?]
       (r/render-component [body chinese?]
                           (dom/getElement "app")))))
 
-    (-main)
+(-main)

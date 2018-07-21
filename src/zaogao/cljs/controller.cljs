@@ -17,3 +17,18 @@
       (= "Chinese"
          (get-in (chan/<! (http/get "/chinese"))
                  [:body :language])))))
+
+
+(defn add-pin [address]
+  (let [gc (google.maps.Geocoder.)]
+    (.geocode gc
+      #js {:address address}
+      (fn [obj]
+        (when-let [lat-lng (aget obj 0 "geometry" "location")]
+          (let [lat (.lat lat-lng)
+                lng (.lng lat-lng)]
+            (chan/go
+              (chan/<!
+                (http/post "/point"
+                           {:transit-params {:lat lat
+                                             :lng lng}})))))))))

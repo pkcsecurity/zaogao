@@ -4,6 +4,7 @@
             [compojure.route :as route]
             [zaogao.clj.index :as index]
             [hiccup.core :as html]
+            [clj-http.client :as client]
             [cognitect.transit :as edn]
             [ring.middleware.format :as fmt]))
 
@@ -20,9 +21,18 @@
    :body {:language (System/getenv "DAOMEI_LANG")
           :theme (System/getenv "DAOMEI_THEME")}})
 
+(defn point-fn [{p :params}]
+  (client/post "http://127.0.0.1:8000/point"
+               {:form-params p
+                :content-type :transit+json
+                :transit-opts {:encode {:handlers {}}
+                               :decode {:handlers {}}}})
+  {:status 200})
+
 (r/defroutes routes
   (r/GET "/" [] index-response-fn)
   (r/GET "/chinese" [] chinese-fn)
+  (r/POST "/point" [] point-fn)
   (route/resources "/")
   (route/not-found nil))
 
