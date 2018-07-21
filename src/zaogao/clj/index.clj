@@ -9,15 +9,18 @@
   (css/css 
     {:pretty-print? false}
     [:* {:box-sizing :border-box}]
-    [:body {:font-size "16px"}]
+    [:body {:font-size "16px"
+            :line-height 1.5}]
     [:h1 {:font-size "3.157em"}]
     [:h2 {:font-size "2.369em"}]
     [:h3 {:font-size "1.777em"}]
     [:h4 {:font-size "1.333em"}]
     [:h5 {:font-size "1em"}]
     [:h6 {:font-size "0.75em"}]
+    [:.border-wide {:border-width "2px"}]
     [:.black {:color "#000"}]
     [:.white {:color "#fff"}]
+    [:.bg-white {:background-color "#fff"}]
     [:.pri {:color pri}]
     [:.bg-pri {:background-color pri}]
     [:.border-pri {:border-color pri}]
