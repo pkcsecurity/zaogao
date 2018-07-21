@@ -148,21 +148,21 @@
       [:h4.sec [:i.fa.fa-weixin]]]]]
 
    [:div.mt3.px2
-    [:h4.pri "Your church is doing well in these 3 areas of church health"]
+    [:h4.pri "Strengths"]
     [:div.p2
-     [:h5 "1. Biblical Worship"]
-     [:h5 "2. Biblical Fellowship"]
-     [:h5 "3. Biblical Ordinances"]]]
+     [:h5.mb1 "1. Biblical Worship"]
+     [:h5.mb1 "2. Biblical Fellowship"]
+     [:h5.mb1 "3. Biblical Ordinances"]]]
 
    [:div.mt3.px2
-    [:h4.pri "Your church is doing poorly in these 3 areas of church health"]
+    [:h4.pri "Weaknesses"]
     [:div.p2
-     [:h5 "1. Biblical Discipline"]
-     [:h5 "2. Biblical Mission"]
-     [:h5 "3. Biblical Discipleship"]]]
+     [:h5.mb1 "1. Biblical Evangelism"]
+     [:h5.mb1 "2. Biblical Mission"]
+     [:h5.mb1 "3. Biblical Discipleship"]]]
 
    [:div.mt3.px2
-    [:h4.sec "Create a profile to get your customized resources."]]
+    [:h4.sec "Get customized resources."]]
    [:div.max-width-1.mx-auto.col-12.bg-sec.rounded.white.center.py2.mt3
     {:on-click #(reset! app-state :create-account)
      :style {:width "250px"}}
@@ -247,7 +247,7 @@
     (fn []
       [:div.fixed.bottom-0.left-0.right-0.bg-pri.px3.pt4
        {:style {:top "75px"}}
-       [:h2.sec "Create Profile"]
+       [:h2.white "Create Profile"]
        [:div.my2
         [:input.col-12.p1 {:placeholder "Name"}]]
        [:div.my2
@@ -269,9 +269,7 @@
 (defn custom-plan []
   [:div.p2.mt3
    [:div.p2
-    [:div.mb1
-     [:i.fa.fa-3x.fa-chevron-circle-down.pri]]
-    [:h2.mb3.sec "Here are your custom resources:"]
+    [:h3.mb3.sec "Here are your custom resources:"]
     [:div.clearfix.mb2
      {:on-click #(reset! app-state :characteristic-page)}
      [:div.col.col-2
@@ -300,11 +298,9 @@
        3]]
      [:div.col.col-10.h3.pri
       "Mission"]]]
-   [:div.p2
-    [:div.mb1
-     [:i.fa.fa-3x.fa-fast-forward.pri]]
-    [:h2.mb3.sec "Now join a small group!"]
-    [:p.sec "WHAT IS A SMALL GROUP? A group of 8-12 peers who will periodically meet to discuss the 12 characteristics you are learning about. Schedule a time to meet with a small group leader below if you are interested."]]
+   [:div.p2.mt2
+    [:h3.mb3.sec "Now join a small group!"]
+    [:p "WHAT IS A SMALL GROUP? A group of 8-12 peers who will periodically meet to discuss the 12 characteristics you are learning about. Schedule a time to meet with a small group leader below if you are interested."]]
    [:div.p2.bg-sec.white.rounded.center.m1.mt2
     {:on-click #(reset! app-state :schedule)}
     [:h4 "Schedule Meeting"]]])
@@ -314,7 +310,7 @@
     (fn []
       [:div.fixed.bottom-0.left-0.right-0.bg-pri.p3
        {:style {:top "75px"}}
-       [:h2.white "Schedule a time to met with a small group leader"]
+       [:h2.white "Schedule a time to meet with a small group leader"]
        [:p.white.mt2 "Choose one of the following times that works best for you"]
        [:div.clearfix.mt3
         [:div.col-2.col
@@ -352,7 +348,7 @@
                       (reset! app-state :thanks)
                       (js/setTimeout #(reset! app-state :landing)
                                      2000))}
-         [:h3 "Schedule Inteview"]]]])))
+         [:h3 "Schedule Interview"]]]])))
 
 (defn twelve-chars []
   [:div.p2.flex.justify-around.items-center.flex-wrap
@@ -390,43 +386,31 @@
                  the importance of one against another. The essential tools for discipleship 
                  are the Word of God, the Spirit of God, and the people of God."]
    [:div.my2
-    [:div.clearfix.white.mt4.mb2
-     [:div.col-2.col
-      [:h1 [:i.fa.fa-circle-o]]]
-     [:div.col-10.col
-      [:h3 "Watch"]]]
+    [:h3.my2 "Watch"]
     [:iframe.mx-auto {:width 305
                       :height 215
                       :src "https://www.youtube.com/embed/8lO0KcvWEH8?start=320" 
                       :frameborder "0" 
                       :allow "autoplay; encrypted-media" 
                       :allowfullscreen :allowfullscreen}]
-    [:div.clearfix.white.mt4
-     [:div.col-2.col
-      [:h1 [:i.fa.fa-circle-o]]]
-     [:div.col-10.col
-      [:h3 "Read"]]]
-    [:div.py3.clearfix
+    [:h3.my2 "Read"]
+    [:div.pb3.clearfix
      [:div.col.col-2.center 
       [:h3.white [:i.fa.fa-file]]]
      [:div.col.col-10.white
       "THE HEALTHY DISCIPLE: A simple lesson series and diagnostic diagram to help new believers know what it means to become a healthy disciple and how to disciple others to become a disciple"]]
-    [:div.py3.clearfix
+    [:div.pb3.clearfix
      [:div.col.col-2.center
       [:h3.white [:i.fa.fa-file]]]
      [:div.col.col-10.white
       "PRACTICAL HERMENEUTICS: This series lines out four key principles of biblical interpretation to help believers know how to read and intepret God’s Word while avoiding some of the most common errors."]]
-    [:div.py3.clearfix
+    [:div.pb3.clearfix
      [:div.col.col-2.center
       [:h3.white [:i.fa.fa-file]]]
      [:div.col.col-10.white
       "WHBI Discipleship: A basic theological module for leaders to better understand the biblical basis for discipleship and how to empower believers in your church to go make disciples."]]
-    [:div.clearfix.white.mt4
-     [:div.col-2.col.center
-      [:h1 [:i.fa.fa-circle-o]]]
-     [:div.col-10.col
-      [:h3 "Discuss"]]]
-
+    [:h3.my2 "Discuss"]
+    [:p.white "Now meet with your small group."]
     [:div.bg-sec.rounded.white.mt4
      [:h4.center.p2
       "Week 2"]]]])

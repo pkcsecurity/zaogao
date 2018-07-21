@@ -2,8 +2,8 @@
   (:require [hiccup.core :as html]
             [garden.core :as css]))
 
-(def pri "rgba(113, 244, 149, 1)")
-(def sec "rgba(19, 13, 253, 1)")
+(def pri "#35d0da")
+(def sec "#c93d1b")
 
 (def secondary-pri "#FFD339")
 (def secondary-sec "#FB7422")
