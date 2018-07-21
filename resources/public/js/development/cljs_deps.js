@@ -16,6 +16,8 @@ goog.addDependency("../reagent/impl/template.js", ['reagent.impl.template'], ['r
 goog.addDependency("../cljsjs/react-dom/development/react-dom.inc.js", ['react_dom', 'cljsjs.react.dom'], ['react'], {'foreign-lib': true});
 goog.addDependency("../reagent/dom.js", ['reagent.dom'], ['reagent.impl.util', 'reagent.interop', 'reagent.ratom', 'cljs.core', 'reagent.impl.template', 'reagent.impl.batching', 'reagent.debug', 'react_dom']);
 goog.addDependency("../reagent/core.js", ['reagent.core'], ['reagent.impl.util', 'reagent.interop', 'reagent.ratom', 'react', 'cljs.core', 'reagent.impl.template', 'reagent.impl.batching', 'reagent.impl.component', 'reagent.debug', 'reagent.dom']);
+goog.addDependency("../cljsjs/chartjs/development/Chart.inc.js", ['cljsjs.chartjs'], [], {'foreign-lib': true});
+goog.addDependency("../zaogao/cljs/radar.js", ['zaogao.cljs.radar'], ['reagent.core', 'cljs.core', 'cljsjs.chartjs']);
 goog.addDependency("../cljs/tools/reader/impl/utils.js", ['cljs.tools.reader.impl.utils'], ['goog.string', 'cljs.core', 'clojure.string']);
 goog.addDependency("../cljs/tools/reader/reader_types.js", ['cljs.tools.reader.reader_types'], ['goog.string', 'cljs.core', 'goog.string.StringBuffer', 'cljs.tools.reader.impl.utils']);
 goog.addDependency("../cljs/tools/reader/impl/inspect.js", ['cljs.tools.reader.impl.inspect'], ['cljs.core']);
@@ -47,4 +49,4 @@ goog.addDependency("../cljs/core/async.js", ['cljs.core.async'], ['cljs.core.asy
 goog.addDependency("../cljs_http/core.js", ['cljs_http.core'], ['goog.net.Jsonp', 'goog.net.XhrIo', 'cljs.core', 'cljs_http.util', 'cljs.core.async', 'goog.net.EventType', 'clojure.string', 'goog.net.ErrorCode']);
 goog.addDependency("../cljs_http/client.js", ['cljs_http.client'], ['cljs_http.core', 'no.en.core', 'goog.Uri', 'cljs.core', 'cljs_http.util', 'cljs.core.async', 'clojure.string', 'cljs.reader']);
 goog.addDependency("../zaogao/cljs/controller.js", ['zaogao.cljs.controller'], ['cljs.core', 'cljs_http.client', 'cljs.core.async']);
-goog.addDependency("../zaogao/cljs/core.js", ['zaogao.cljs.core'], ['goog.dom', 'reagent.core', 'cljs.core', 'zaogao.cljs.controller']);
+goog.addDependency("../zaogao/cljs/core.js", ['zaogao.cljs.core'], ['goog.dom', 'reagent.core', 'cljs.core', 'zaogao.cljs.radar', 'zaogao.cljs.controller']);

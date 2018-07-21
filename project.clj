@@ -14,7 +14,8 @@
                  [org.clojure/core.async "0.4.474"]
                  [cljs-http "LATEST"]
                  [ring-middleware-format "0.7.2"]
-                 [lein-cljsbuild "LATEST"]]
+                 [lein-cljsbuild "LATEST"]
+                 [cljsjs/chartjs "LATEST"]]
   :min-lein-version "2.7.1"
   :main ^:skip-aot zaogao.clj.core
   :profiles {:uberjar {:main zaogao.clj.core, :aot :all}}
