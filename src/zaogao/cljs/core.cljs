@@ -155,7 +155,7 @@
      [:h5 "3. Biblical Ordinances"]]]
 
    [:div.mt3.px2
-    [:h4.pri "Your church is doing well in these 3 areas of church health"]
+    [:h4.pri "Your church is doing poorly in these 3 areas of church health"]
     [:div.p2
      [:h5 "1. Biblical Discipline"]
      [:h5 "2. Biblical Mission"]
