@@ -8,26 +8,35 @@
 
 (enable-console-print!)
 
-(defn landing-header []
-  [:div.flex.justify-center.items-center.flex-column.bg-pri.white
-   {:style {:height "150px"}}
-   [:h1.mb2 "十二"]
-   [:h3.caps "Characteristics"]])
+(defn landing-header [chinese?]
+  (if chinese?
+    [:div.flex.justify-center.items-center.flex-column.bg-pri.white
+     {:style {:height "150px"}}
+     [:h1.mb2 "十二"]
+     [:h3.caps "健康教会十二个主要特点"]]
+    [:div.flex.justify-center.items-center.flex-column.bg-pri.white
+     {:style {:height "150px"}}
+     [:h1.mb2 "12"]
+     [:h3.caps "Characteristics"]]))
 
-(defn landing-hero []
+(defn landing-hero [chinese?]
   [:div.absolute.left-0.right-0.flex.justify-center.items-center
    {:style {:top "150px"
             :bottom "150px"}}
    [:div.max-width-1.mx-auto.col-12.p3
-     [:h1.sec "How is your church doing?"]]])
+    (if chinese?
+     [:h1.sec "您的教會狀況如何?"]
+     [:h1.sec "How is your church doing?"])]])
 
-(defn landing-button []
+(defn landing-button [chinese?]
   [:div.absolute.left-0.right-0.bottom-0.flex.justify-center.items-center
    {:style {:height "150px"}}
    [:div.bg-pri.m2.px2.py2.rounded
     {:on-click (fn []
                  (reset! app-state :survey-intro))}
-    [:h3.white "What are the 12?"]]])
+    (if chinese?
+      [:h3.white "十二个特点是什么？"]
+      [:h3.white "What are the 12?"])]])
 
 (defn menu [menu-atom]
   [:div.fixed.top-0.left-0.bottom-0.right-0.z4.p2.white
@@ -391,13 +400,13 @@
     [:h1.sec "江泽民"]
     [:h4 "济南，山东"]]])
 
-(defn body []
+(defn body [chinese?]
   (case @app-state
     :landing 
     [:div.fixed.top-0.left-0.right-0.bottom-0
-     [landing-header]
-     [landing-hero]
-     [landing-button]]
+     [landing-header chinese?]
+     [landing-hero chinese?]
+     [landing-button chinese?]]
 
     :survey-intro
     [:div
@@ -454,7 +463,9 @@
 
 
 (defn -main []
-  (r/render-component [body]
-                      (dom/getElement "app")))
+  (controller/chinese?
+    (fn [chinese?]
+      (r/render-component [body chinese?]
+                          (dom/getElement "app")))))
 
-(-main)
+    (-main)

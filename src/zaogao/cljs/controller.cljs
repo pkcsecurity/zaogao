@@ -10,3 +10,10 @@
               (http/post "/domain/valid"
                          {:transit-params {:domain domain}}))
             [:body :valid?]))))
+
+(defn chinese? [on-success]
+  (chan/go 
+    (on-success
+      (= "Chinese"
+         (get-in (chan/<! (http/get "/chinese"))
+                 [:body :language])))))
