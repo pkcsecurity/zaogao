@@ -1,23 +1,7 @@
 (defproject zaogao "0.1.0-SNAPSHOT"
   :dependencies [[org.clojure/clojure "LATEST"]
-                 [cheshire "5.8.0"]
-                 [org.immutant/web "LATEST"]
-                 [ring/ring-core "LATEST"]
-                 [ring/ring-devel "LATEST"]
-                 [org.clojure/clojurescript "LATEST"]
-                 [com.cognitect/transit-clj "0.8.309"]
-                 [com.cognitect/transit-cljs "0.8.256"]
-                 [garden "LATEST"]
-                 [compojure "LATEST"]
-                 [hiccup "LATEST"]
-                 [reagent "LATEST"]
-                 [org.clojure/core.async "0.4.474"]
-                 [cljs-http "LATEST"]
                  [clj-http "LATEST"]
-                 [ring-middleware-format "0.7.2"]
-                 [lein-cljsbuild "LATEST"]
-                 [hyperlight "0.3.1"]
-                 [cljsjs/chartjs "LATEST"]]
+                 [hyperlight "0.3.1"]]
   :min-lein-version "2.7.1"
   :main ^:skip-aot zaogao.clj.core
   :profiles {:uberjar {:main zaogao.clj.core, :aot :all}}
