@@ -16,6 +16,7 @@
                  [clj-http "LATEST"]
                  [ring-middleware-format "0.7.2"]
                  [lein-cljsbuild "LATEST"]
+                 [hyperlight "0.3.1"]
                  [cljsjs/chartjs "LATEST"]]
   :min-lein-version "2.7.1"
   :main ^:skip-aot zaogao.clj.core
